@@ -1,0 +1,260 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+
+}
+  
+body{
+    font-family: 'Roboto Condensed', sans-serif;
+    background-color: #1F1F1F;
+  
+}
+
+.container{
+    max-width: 1200px;
+    margin: 0 auto;
+
+}
+
+
+.form{
+   
+        padding: 10px;
+    background: rgb(11, 11, 11);
+    border: no;
+    border-radius: 250px; 
+    box-shadow: -5px 5px 27px 18px #d8042b;
+    animation: anifor 3s linear ;
+
+    animation-direction:alternate;
+}
+
+@keyframes anifor {
+
+
+    /*from {
+        transform: rotatey(360deg);
+      }
+    
+    propuesta de la segundo animacion del formulario*/
+     from {
+        margin-left: 100%;
+        width: 300%;
+      }
+    
+      to {
+        margin-left: 0%;
+        width: 100%;
+      }
+      
+    
+}
+
+
+
+
+.form .btn2{
+    display: inline-block;
+    padding: 11px 25px;
+    background-color: #f13737;
+    color: #ffff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: 'Bebas Neue', cursive;
+    margin: 30px ;
+    border-radius: 9px; 
+
+}
+
+
+.form .btn2:hover{
+    background-color: #d91e1e;
+    cursor: pointer;
+    box-shadow: -50px 0px rgba(0,0,0,0.5);
+    box-shadow: -5px 5px 27px 17px #9B63D3;
+
+}
+
+.logo_img{
+    width: 90px;
+    height: 90px;
+   border-radius: 100dvh;
+   animation: rotar 5s linear infinite;
+   box-shadow: -1px 1px 27px 0.50px #9B63D3;
+      
+}
+
+
+@keyframes rotar{
+
+    from{
+        transform: rotateY(360deg);
+    }
+}
+.menu{
+
+     position: absolute;
+     top: 0;
+     left: 0;
+     right: 0;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     z-index: 1000;
+
+}
+
+.menu a{
+
+  position: relative;
+    float:left;
+  font-size: 24px;
+  padding: 18px;
+  color: rgb(184, 28, 36);
+
+}
+
+.menu b {
+    cursor:default;
+    position: absolute;
+     float: left;
+    font-size: 19px;
+    padding: 120px;
+    color: rgb(214, 214, 214);
+    
+  
+}
+
+
+.menu .barnav ul li a  {
+    position: relative;
+    float:left;
+  font-size:25px;
+  padding: 19px;
+  color: rgb(182, 27, 221);
+ 
+}
+
+
+/*box-shadow:  -5px 5px 6px 0.4px #ff0808;
+*/
+.menu .barnav ul li :hover{
+
+    border-radius: 100px;
+ color:#cf2d3a;
+
+}
+
+menu{
+    display: none;
+}
+
+
+.header-txt{
+    text-align: center;
+    margin-bottom: 45px;
+
+}
+.header-txt input{
+    cursor: pointer;
+   color: white;
+}
+
+
+.header-txt  h2,span,h3 {
+ 
+    cursor: default;
+    font-size: 50px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #cf2d3a;
+    margin-bottom: 15px;
+ 
+
+}
+
+.header-txt h1{
+ height: 1cm;    
+    margin-bottom: 43px;
+    cursor: default;
+    font-size: 50px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #cf2d3a;
+    margin-bottom: 15px;
+   
+}
+
+.header-txt span{
+    font-size: 25px;
+
+}
+
+
+.header-txt p{
+    cursor: default;
+    color: #cccccc;
+    padding: 0 250px;
+    margin: 25px 0;
+    
+}
+
+.header-direc{
+     cursor: default;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.dir h3{
+    font-size: 19px;
+    color:white;
+    text-transform: uppercase;
+}
+
+.dir p{
+    font-size: 18px; 
+    color:white;
+    text-transform: uppercase;
+}
+
+.footer {
+    box-shadow:  -5px 5px 28px 14px #b70909;
+    cursor: default;
+    background-color: rgb(24, 23, 23);
+    -webkit-padding-before: 40px;
+            padding-block-start: 29px;
+    display: -ms-grid;
+    display: grid;
+    justify-items: center;
+    -webkit-padding-after: 50px;
+            padding-block-end: 50px;
+  }
+  .footer__container {
+    width: 70%;
+  }
+  .footer__container p {
+    color: white;
+    font-size: 15px;
+    text-align: center;
+  }
+  .footer__container ul {
+    list-style: none;
+  }
+  .footer__container ul li {
+    font-size: 15
+    px;
+    color: white;
+    text-align: center;
+  }
+
+

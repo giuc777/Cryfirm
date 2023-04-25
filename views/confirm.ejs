@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypfirm Confirmar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="/css/estiloConfirmacion.css">
+</head>
+<body>
+    <main class="container">
+        <header>
+            <h1>Crypfirm</h1>
+        </header>
+        <section class="main">
+            <icon class="logo">
+                <img class="logo_img" src="/img/pantalla_de_inicio.png" alt="">
+            </icon>
+            <% if (EnvForm) { %>
+                <article class="AreaConfirmacion">
+                    <form action="/verificar" class="form" method="post">
+                        <label for="">Ingrese su token</label>
+                        <input type="text", id="otpCode", name="otpCode">
+                        <input type="submit" value="Ingresar">
+                    </form>
+                    <% if (respuestaservidor) { %>
+                        <span class="alert">El token ingresado es incorrecto, tiene un intento más</span>
+                    <% } %>                
+                </article>
+              <% } else { %>
+                <article class="AreaConfirmacion">
+                    <p class="limite_parrafo">El codigo ingresado es incorrecto, ha alcanzado el limite de verificaciones, por lo que es necesario que cree su cuenta desde el incio</p>
+                    <a href="/" class="limite_button" onclick="window.scrollTo(0, 0);">Volver al inicio</a>
+                </article>
+              <% } %>
+              
+            
+        </section>
+
+    </main>
+</body>
+</html>

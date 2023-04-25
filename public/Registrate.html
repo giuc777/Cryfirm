@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypfirm registrate</title>
+    <script src="https://kit.fontawesome.com/03a89292db.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="css/estiloregistarte.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Crypfirm</h1>
+    </header>
+    
+    <main class="container">
+        <icon class="logo">
+            <img class="logo_img" src="img/pantalla_de_inicio.png" alt="">
+        </icon>
+        <section class="AreadeRegistro">
+            <form action="/enviar-sms" method="post">
+                    <label for=""> Nombre de Usuario</label>
+                    <input type="text" class="Nombre_usuario", required>
+                    <label for="">Número de telefono</label>
+                    <input type="tel" ondrop="return false;" onpaste="return false;" onkeypress="return event.charCode&gt;=48 &amp;&amp; event.charCode&lt;=57" class="telefono", required>
+                    <label for="">Fecha de Nacimiento</label>
+                    <input type="date">
+                    <input type="submit" value="Crear Cuenta" class="form__boton">
+            </form>
+        </section>
+    </main>
+    <script src="//media.twiliocdn.com/sdk/js/client/v1.4/twilio.min.js"></script>
+</body>
+
+</html>

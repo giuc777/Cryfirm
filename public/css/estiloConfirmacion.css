@@ -1,0 +1,107 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Roboto", sans-serif;
+  background: #000000; 
+  background: -webkit-linear-gradient(
+    to right,
+    #000000,
+    #000000
+  ); 
+  background: linear-gradient(
+    to right,
+    #000000,
+    #000000
+  ); 
+}
+
+h1{
+  color: #b82601;
+  text-align: center;
+  margin-top: 5vh;
+}
+
+.main{
+  margin: auto;
+  display: flex;
+  width: 85vh;
+  background-color: white;
+  justify-content: space-around;
+  height: 60vh;
+  border-radius: 30px;
+}
+
+.logo_img{
+  height: 60vh;
+}
+.AreaConfirmacion{
+  display: grid;
+  align-content: center;
+}
+form{
+  display: grid;
+  gap: 5px;
+  margin-inline-end: 10px;
+}
+
+label{
+  
+  font-size: 3vh;
+  font-weight: bold;
+}
+input[type="password"]:focus {
+  outline: none;
+  border: 2px solid #B82601;
+  box-shadow: 0px 0px 5px black;
+  text-align: center;
+  font-size: 2.5vh;
+}
+input[type="submit"] {
+background: rgb(0, 0, 0);
+height: 5vh;
+margin-block-start: 10px;
+padding: 3px 30px;
+color: white;
+border: none;
+cursor: pointer;
+border-radius: 15px;
+}
+input[type="submit"]:hover{
+  background: #B82601;
+}
+span{
+  margin-top: 20px;
+  font-weight: bold;
+  color: red
+}
+
+.limite_parrafo{
+  margin-inline-end: 10px;
+  text-align: center;
+  font-size: 3vh;
+}
+
+.limite_button{
+  text-decoration: none;
+  margin-block-start: 3vh;
+  margin-inline-end: 10px;
+  border: 2px solid #B82601;
+  box-shadow: 0px 0px 5px black;
+  text-align: center;
+  font-size: 2.5vh;
+  color: white;
+  background-color: #B82601;
+  height: 5vh;
+  border-radius: 15px;
+  padding-block-start: 0.5vh;
+}
+
+
+.limite_button:hover{
+  background-color: black;
+  color: #B82601;
+  border: 2px solid white;
+}

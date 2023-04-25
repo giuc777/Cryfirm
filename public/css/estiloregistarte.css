@@ -1,0 +1,89 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: "Roboto", sans-serif;
+    background: #000000; 
+   
+  }
+  
+  .container{
+      width: 85vh;
+      margin: auto;
+      background: white;
+      border-radius: 30px; /* forma del borde */
+      display: flex;
+      justify-content: space-around;
+
+      
+  }
+  .logo_img{
+      width: 250px;
+      align-items: flex-end; /*colocar una foto de imagen"first baseline" */
+  }
+  
+  .form_registro{
+  
+      padding: 20px;
+      display: grid;
+      gap: 10px;
+      
+  }
+  
+  
+  /*.form__usuario,*/
+  
+  
+  
+  
+  h1{
+      text-align: center;
+      padding: 10px;
+      color: rgb(248, 0, 0);
+  }
+  
+ .AreadeRegistro{
+  display: grid;
+  place-self: center;
+  height: 35vh;
+  
+ }
+ .AreadeRegistro .form{
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+ }
+ .AreadeRegistro .form__boton {
+  background: rgb(0, 0, 0);
+  margin-block-start: 10px;
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 30px;
+}
+input[type="text"]:focus {
+  outline: none;
+  border: 2px solid #B82601;
+  box-shadow: 0px 0px 5px black;
+  text-align: center;
+  font-size: 2.5vh;
+}
+input[type="tel"]:focus {
+  outline: none;
+  border: 2px solid #B82601;
+  box-shadow: 0px 0px 5px black;
+  text-align: center;
+  font-size: 2.5vh;
+}
+.AreadeRegistro .form__boton:hover{
+  background: red;
+}
+ 
+  .boton:hover{
+    background: rgb(255, 255, 255);
+  
+  }
+ 

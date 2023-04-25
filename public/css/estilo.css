@@ -1,0 +1,141 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Roboto", sans-serif;
+  background: #000000; 
+  background: -webkit-linear-gradient(
+    to right,
+    #000000,
+    #000000
+  ); 
+  background: linear-gradient(
+    to right,
+    #000000,
+    #000000
+  ); 
+}
+
+.container{
+    width: 85vh;
+    position: relative;
+    margin: auto;
+    background: white;
+    padding: 40px;
+    border-radius: 30px; /* forma del borde */
+    display: flex;
+    justify-content: space-around;
+    gap: 50px;
+    
+}
+.logo_img{
+    width: 250px;
+
+}
+
+
+.AreaInicioSecion{
+  display: grid;
+  place-self: center;
+  height: 35vh;
+}
+.form{
+  display: grid;
+
+  justify-items: center;
+    height: 25vh;
+    gap: 10px;
+    border-radius: 30px; 
+  
+    
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border: 2px solid #B82601;
+  box-shadow: 0px 0px 5px black;
+  text-align: center;
+  font-size: 2.5vh;
+}
+
+.Title_form{
+  font-size: 3vh;
+  color: #B82601;
+}
+.inactive{
+  display: none;
+}
+.alert{
+  color: red;
+  font-weight: bold;
+}
+
+.botonAccesar{
+  background: rgb(0, 0, 0);
+  margin-block-start: 10px;
+  padding: 3px 30px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 15px;
+  
+}
+
+.botonRegistrarse{
+  background: rgb(0, 0, 0);
+  margin-block-start: 10px;
+  padding: 3px 25px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 15px;
+
+}
+
+h1{
+    text-align: center;
+    padding: 10px;
+    color: #B82601;
+}
+
+
+
+.botonAccesar:hover{
+    background: #B82601;
+}
+
+.botonRegistrarse:hover{
+  background: #B82601;
+
+}
+
+
+ .footer {
+  background-color: black;
+  -webkit-padding-before: 40px;
+          padding-block-start: 50px;
+  display: -ms-grid;
+  display: grid;
+  justify-items: center;
+  -webkit-padding-after: 50px;
+          padding-block-end: 50px;
+}
+.footer__container {
+  width: 70%;
+}
+.footer__container p {
+  color: white;
+  font-size: 15px;
+  text-align: center;
+}
+.footer__container ul {
+  list-style: none;
+}
+.footer__container ul li {
+  font-size: 15
+  px;
+  color: white;
+  text-align: center;
+}
