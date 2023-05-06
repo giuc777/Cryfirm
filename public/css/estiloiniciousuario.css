@@ -24,9 +24,9 @@ body{
 }
 
 
-.form{
+.form, .formRuta1{
    
-        padding: 10px;
+    padding: 10px;
     background: rgb(11, 11, 11);
     border: no;
     border-radius: 250px; 
@@ -226,6 +226,90 @@ menu{
     color:white;
     text-transform: uppercase;
 }
+
+.form p {
+    font-size: 4vh; 
+    color:white;
+    text-transform: uppercase;
+}
+
+.form li + li{
+    margin-block-start: 15vh;
+}
+
+.form button{
+    font-size: 4vh;
+    background-color: #b70909;
+    color: white;
+    padding: 1vh;
+    border-radius: 10px;
+    border: none;
+}
+
+.form ul li:first-child {
+    margin-block-start: 4vh;
+
+}
+  
+
+
+.form ul li:last-child {
+    margin-block-end: 4vh;
+  }
+  
+  .formRuta1{
+    text-align: center;
+    font-size: 3vh;
+
+  }
+
+  .formRuta1 label{
+    color: white;
+    display: block;
+    margin-block-end: 2vh;
+  }
+  
+  .formRuta1 button{
+    display: block;
+    margin: auto;
+    margin-block-start: 5vh;
+    font-size: 3vh;
+    background-color: #b70909;
+    color: white;
+    padding: 1vh;
+    border: none;
+    border-radius: 10px;
+  }
+  .formRuta1 button:hover{
+    color: black;
+  }
+  .formRuta1 p{
+    font-size: 4vh;
+  }
+ 
+  .formRuta1 .alertPDF{
+    margin-block-start: 2vh;
+    color: #b70909;
+    font-size: 5vh;
+  }
+/* Creador del hash
+*/
+
+
+.presentacionFirma table{
+    text-align: center;
+    margin: auto;
+    border-spacing: 4vh;
+    color: white;
+    font-size: 4vh;
+}
+
+
+
+
+/* El footer
+*/
+
 
 .footer {
     box-shadow:  -5px 5px 28px 14px #b70909;

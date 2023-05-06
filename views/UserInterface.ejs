@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <cript src="https://kit.fontawesome.com/03a89292db.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <title>Crypfirm inicio</title>
+    <link rel="stylesheet" href="/css/estiloiniciousuario.css">
+    
+
+</head>
+
+<body>
+<header class="header">
+
+
+ <div class="menu">
+
+    <a href="#" class="usn">[Usuario]:</a> 
+    <b href="#" class="nom">[@Shadow-01]</b>
+   
+
+
+    <nav class="barnav">
+        <ul>
+            <li><a href="#"">[Cerra sesión]</a></li>
+        </ul>
+
+    </nav>
+
+ </div>
+
+
+   
+  <div class="header-content container">
+     <div class="header-txt">
+        <div class="logo">
+            <img class="logo_img" src="/img/kit.jpg" alt="">
+        </div>
+        <h1>Crypfirm</h1>
+        <span>Empresa Guatemalteca</span>
+      
+        <p>
+       
+            Crypfirm es una empresa Guatemalteca que crea y verifica firmas electronicas. 
+   
+        </p>
+
+        <% if (inicioSecion) { %>
+            <section class="form">
+                <p>Elige que quieres hacer:</p>
+                <ul>
+                    <li>
+                        <form method="POST" action="/ruta1">
+                            <button type="submit">Quiero firmar un documento</button>
+                        </form> 
+                    </li>
+                    <li>
+                        <form method="POST" action="/ruta2">
+                            <button type="submit">Quiero verificar dos documentos firmados</button>
+                        </form> 
+                    </li>
+                </ul>
+            </section>
+        <% } %>
+        <% if (ruta == 1) { %>
+            <section class="formRuta1">
+                <% if (subirArchivo) { %>
+                    <p>Suba el archivo que desea firmar, recuerde que lo mejor es que este en formato pdf</p>
+                    <form action="/firmar" method="POST" enctype="multipart/form-data">
+                        <label for="">Sube tu archivo</label>
+                        <input type="file" id="pdf" name="pdf" accept="application/pdf" required>
+                        <% if (ErrorPDF) { %>
+                            <label class="alertPDF">Tu archivo no es PDF</label>
+                        <% } %>                    
+                        <button type="submit">Firmar documento</button>
+                    </form>
+                <% } else { %>
+                    <article class="presentacionFirma">
+                        <p>El hash del documento firmado es el siguiente: </p>
+                        <table>
+                            <tr>
+                                <td><%= NombrePDF %></td>
+                                <td>Hash -----></td>
+                                <td><%= HashPDF %></td>
+                            </tr>
+                        </table>
+                        <button onclick="window.location.href='/secionIniciada'">Regresar al inicio</button>
+                    </article> 
+                <% } %>
+            </section>
+        <% } else if (ruta == 2) { %>
+            <form action="/verificar" method="post" class="form">
+                <p>
+                    Inserte los archivos en PDF que lleven la mismas firmas electronicas
+                </p>
+                <p>archivo 1</p>
+                <input type="file" id="pdf1" name="pdf1" accept="application/pdf" required>
+                <p>archivo 2</p>
+                <input type="file" id="pdf2" name="pdf2" accept="application/pdf" required>   
+                
+            </form>
+        <% } %>
+        
+
+
+     </div>
+     
+
+
+
+     <div class="header-direc">
+
+        <div class="Infoem">
+             <h5></h5>
+        </div>
+
+        
+        <div class="dir">
+            <h3> Dirección</h3>
+            <p> Sololá, Sololá Guatemala</p>
+
+        </div>
+
+
+
+        <div class="dir">
+            <h3> Teléfono</h3>
+            <p> +502 9020-1836 </p>
+
+        </div>
+
+
+       
+
+        <div class="dir">
+            <h3> Horario</h3>
+            <p> Lunes a viernes de 8:00 a.m - 5:00 p.m</p>
+
+        </div>
+        
+        <div class="Infoem">
+            <h5></h5>
+       </div>
+
+          
+     </div>
+
+
+  </div>
+
+
+  <footer class="footer">
+    <div class="footer__container">
+      <p class="container__contenido__footer">Este es un proyecto para el curso de Derecho Informatico hecho por: </p>
+
+      <ul class="container__nombres"> 
+    <li class="nombres__letras">Lorenzo Aroldo Tereta López </li>
+      <li class="nombres__letras">Gadiel Isaí Us Cosme</li>
+      <li class="nombres__letras">Rolando Eliseo Gómez Velásquez</li>
+      <li class="nombres__letras">Jayron Josué Guarchaj Menchu</li>
+      </ul>
+    
+
+      
+    </div>
+  </footer>  
+
+</header>
+
+</html>
