@@ -283,6 +283,23 @@ menu{
   .formRuta1 button:hover{
     color: black;
   }
+
+  .buttonVerificar{
+    display: block;
+    margin: auto;
+    margin-block-start: 5vh;
+    font-size: 3vh;
+    background-color: #b70909;
+    color: white;
+    padding: 1vh;
+    border: none;
+    border-radius: 10px;
+  }
+
+  .buttonVerificar:hover{
+    cursor: pointer;
+  }
+
   .formRuta1 p{
     font-size: 4vh;
   }

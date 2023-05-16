@@ -6,6 +6,9 @@ require('dotenv').config();
 const multer = require('multer');
 const crypto = require('crypto');
 const fs = require('fs');
+const { render } = require('ejs');
+const { send } = require('process');
+const { PDFDocument, StandardFonts, rgb } = require('pdf-lib');
 
 //para el uso de EJS
 app.set('view engine', 'ejs');
@@ -111,6 +114,22 @@ const upload = multer({
   dest: 'uploads/' // La carpeta donde se guardarán los archivos subidos
 });
 
+
+//la carpeta donde se guada el PDF firmado
+const outputPath = path.join(__dirname, 'PDFfirmado', 'nuevo_archivo.pdf');
+
+
+app.post('/ruta1', (req, res) =>{
+  const rutauser ={
+    inicioSecion : false,
+    ruta: 1,
+    subirArchivo: true,
+    ErrorPDF: false,
+  }
+  res.render("UserInterface", rutauser);
+});
+
+//Creamos lo necesario para firmar el documento
 app.post('/ruta1', (req, res) =>{
   const rutauser ={
     inicioSecion : false,
@@ -143,19 +162,41 @@ const firmar = true;
   
 })
 
+app.post('/descargar', (req, res)=>{
+  const file = './PDFfirmado/nuevo_archivo.pdf';
+  res.download(file, 'DocFimado.pdf', (err) => {
+    if (err) {
+      console.error(`Error al descargar el archivo: ${err}`);
+      res.status(404).send('Archivo no encontrado');
+    }
+  });
+});
 
 
-//La segunda ruta es para la comparacion de Las dos Rutas
+
+//La segunda ruta es para la comparacion de firmas
 app.post('/ruta2', (req, res)=>{
   
   const rutauser= {
     inicioSecion: false,
     ruta: 2,
+    ErrorPDF: false
   }
   res.render("UserInterface", rutauser);
 })
 app.post('/verificar', upload.fields([{ name: 'pdf1', maxCount: 1 }, { name: 'pdf2', maxCount: 1 }]), (req, res) => {
-  
+  const rutasUser =[
+    {
+      inicioSecion : false,
+      ruta: 2,
+      ErrorPDF: true
+    },
+    {
+      inicioSecion : false,
+      ruta: 1,
+      subirArchivo: false,
+    }
+  ]
   
   const firmar = false;
   guardarPDF(req, res, rutasUser, firmar);
@@ -163,7 +204,6 @@ app.post('/verificar', upload.fields([{ name: 'pdf1', maxCount: 1 }, { name: 'pd
 });
 
 
-//Funciones
 //generamos la funcion que guardara el PDF
 function guardarPDF(req, res, rutauser, firmar) {
   if(firmar){
@@ -176,29 +216,116 @@ function guardarPDF(req, res, rutauser, firmar) {
     const extension = path.extname(file.originalname);
   
     if (extension === '.pdf') {
+     
+    
       const pdfPath = path.resolve(file.path);
       const pdf = fs.readFileSync(pdfPath);
+
+      const uint8Array = new Uint8Array(pdf)
+      console.log(uint8Array)
+      hashDelPDF = crearHash(pdf)
   
   
       rutauser[1].NombrePDF = []; // Crear la propiedad subirArchivo como un array vacío
       rutauser[1].NombrePDF.push(pdf.name); // Agregar pdfinfo al array
       rutauser[1].HashPDF = []; 
-      rutauser[1].HashPDF.push(crearHash(pdf)); // Agregar pdfinfo al arra
-      console.log(rutauser[1]);
+      rutauser[1].HashPDF.push(hashDelPDF); 
+      crearDescarga(uint8Array, hashDelPDF);
+
+
+      
       res.render("UserInterface", rutauser[1]);
+
+
+
   
     } else {
       
       res.render("UserInterface", rutauser[0]);
     }
   }else{
-    const pdf1 = req.files['pdf1'][0]; // el primer archivo PDF cargado
-    const pdf2 = req.files['pdf2'][0]; // el segundo archivo PDF cargado
-    if(!pdf1 || !pdf2 ){
-      
+    
+
+    const Pdf1 = req.files['pdf1'][0]; // el primer archivo PDF cargado
+    const Pdf2 = req.files['pdf2'][0]; // el segundo archivo PDF cargado
+
+    
+
+    if(!Pdf1 || !Pdf2 ){
+      return res.render("UserInterface", rutauser[0]);
+
+    }
+
+
+    
+    const files = [Pdf1, Pdf2] 
+    const file = [fs.readFileSync(Pdf1.path), fs.readFileSync(Pdf2.path)];
+    //Comprueba que sean PDF
+    files.forEach(element => {
+      const extension = path.extname(element.originalname);
+      if (extension != '.pdf'){
+       res.render("UserInterface", rutauser[0]);
+     }
+    });
+
+    console.log(file[0])
+    console.log(file[1])
+    
+    console.log("vamos bien")
+    let hash1 = crearHash(file[0]);
+    console.log("seguimos bien")
+    let hash2 = crearHash(file[1]);
+
+    if(hash1 === hash2){
+      res.redirect("/identicas");
+    }else{
+      res.redirect("/diferentes")
     }
     
   }
+}
+
+
+app.get("/identicas", (req, res)=>{
+  const message = "Las firmas coinciden"
+  res.render("prueba", {message});
+})
+
+app.get("/diferentes", (req, res)=>{
+  const message = "Las firmas no coinciden"
+  res.render("prueba", {message});
+})
+
+//funcion para la preparación de descarga del PDF
+async function crearDescarga(pdfBytes, hash){
+  const pdfDoc = await PDFDocument.load(pdfBytes); // Cargar el PDF desde los bytes
+
+  const page = pdfDoc.addPage();
+
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const { width, height } = page.getSize();
+  const currentDate = new Date();
+
+  // Obtener la fecha en formato ISO 8601 (YYYY-MM-DD)
+  const isoDateString = currentDate.toISOString().split('T')[0];
+
+  const paragraph1 = 'firma no. ' + hash;
+  
+  const fontSize = 12;
+  const lineHeight = fontSize * 1.2;
+
+  // Escribir el primer párrafo
+  page.drawText(paragraph1, {
+    x: 50,
+    y: height - 50,
+    size: fontSize,
+    font: font,
+  });
+
+
+
+  const modifiedPdfBytes = await pdfDoc.save();
+  fs.writeFileSync(outputPath, modifiedPdfBytes);
 }
 
 

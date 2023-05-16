@@ -8,7 +8,7 @@
     <cript src="https://kit.fontawesome.com/03a89292db.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <title>Crypfirm inicio</title>
-    <link rel="stylesheet" href="/css/estiloiniciousuario.css">
+    <link rel="stylesheet" href="css/estiloiniciousuario.css">
     
 
 </head>
@@ -38,7 +38,7 @@
   <div class="header-content container">
      <div class="header-txt">
         <div class="logo">
-            <img class="logo_img" src="/img/kit.jpg" alt="">
+            <img class="logo_img" src="img/kit.jpg" alt="">
         </div>
         <h1>Crypfirm</h1>
         <span>Empresa Guatemalteca</span>
@@ -88,19 +88,28 @@
                                 <td><%= HashPDF %></td>
                             </tr>
                         </table>
+                        <form action="/descargar" method="POST" enctype="multipart/form-data">
+                            <label for="">Descarga El PDF firmado</label>
+                            <button type="submit">Descargar PDF</button>
+                        </form>
                         <button onclick="window.location.href='/secionIniciada'">Regresar al inicio</button>
                     </article> 
                 <% } %>
             </section>
         <% } else if (ruta == 2) { %>
-            <form action="/verificar" method="post" class="form">
+            <form action="/verificar" method="POST" enctype="multipart/form-data">
                 <p>
                     Inserte los archivos en PDF que lleven la mismas firmas electronicas
                 </p>
                 <p>archivo 1</p>
                 <input type="file" id="pdf1" name="pdf1" accept="application/pdf" required>
                 <p>archivo 2</p>
-                <input type="file" id="pdf2" name="pdf2" accept="application/pdf" required>   
+                <input type="file" id="pdf2" name="pdf2" accept="application/pdf" required>
+                <% if (ErrorPDF) { %>
+                    <label class="alertPDF">Tu archivo no es PDF</label>
+                <% } %>   
+                <button type="submit" class="buttonVerificar">Verificar firmas</button>
+
                 
             </form>
         <% } %>
