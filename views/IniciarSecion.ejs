@@ -20,12 +20,16 @@
             <img class="logo_img" src="img/pantalla_de_inicio.png" alt="">
         </figure>
         <section class="AreaInicioSecion">
-            <form action="" class="form">
+            <form action="/VerificarUser" class="form" method="post">
                 <label for="" class="Title_form">Usuario</label>
-                <input type="text" class="usuario", required>
+                <input type="text" autocomplete="off" class="usuario", required="", placeholder="nombre" name="nombre_secion">
+                <label for="" class="Title_form">Constraseña</label>
+                <input type="password" required="" autocomplete="off" placeholder="password" name="password_secion">
                 <input type="submit" value ="Accesar"class="botonAccesar">
         </form>
-        <span class="alert inactive">Los ingresados datos son invalidos</span>
+        <% if (respuestaservidor) { %>
+            <span class="alert">Los datos ingresados son invalidos</span>
+        <% } %>
         </section>
     </main>
 
@@ -46,8 +50,7 @@
 
       
 
-    <script src="js/MainIniciarSecion.mjs"></script>
-    <script src="//media.twiliocdn.com/sdk/js/client/v1.4/twilio.min.js"></script>
+    
 
 </body>
 

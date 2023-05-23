@@ -8,13 +8,44 @@ const crypto = require('crypto');
 const fs = require('fs');
 const { render } = require('ejs');
 const { send } = require('process');
+const mysql = require('mysql2');
 const { PDFDocument, StandardFonts, rgb } = require('pdf-lib');
+const session = require('express-session');
+
+
+app.use(session({
+  secret: process.env.SESSION, 
+  resave: false,
+  saveUninitialized: true
+}));
 
 //para el uso de EJS
 app.set('view engine', 'ejs');
 //varibles twilio
-const verifySid = "VAa880bf93dacfdadb85f2dcd4b3ce2549";
+const verifySid = process.env.TWILIO_VERIFYSID;
 const client = require('twilio')(process.TWILIO_ACCOUNT_SID, process.TWILIO_AUTH_TOKEN);
+
+const dbHost = process.env.DB_HOST;
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PASSWORD;
+const dbDatabase = process.env.DB_DATABASE;
+
+
+const connection = mysql.createConnection({
+  host: dbHost,
+  user: dbUser,
+  password: dbPassword,
+  database: dbDatabase,
+});
+
+connection.connect((err) => {
+  if (err) {
+    console.error('Error al conectar a la base de datos:', err);
+    return;
+  }
+  console.log('Conexión establecida correctamente');
+});
+
 
 
 // Configurar body-parser
@@ -32,24 +63,97 @@ app.listen(3001, function() {
   console.log('La aplicación está escuchando en el puerto 3001.');
 });
 
+app.get("/Registrarse",(req, res)=>{
+  const error = {
+    ErrorBasedatos: false,
+    ErrorNomUser: false,
+    ErrorNumber: false
+  }
+  res.render("Registrate", error)
+})
+
+
+
 //usando el Api de Twilio
 app.post("/enviar-sms", (req, res) => {
+  // datos recuperados del formulario
+  let nombre = req.body.nombre;
+  let password = req.body.password;
+  let number = req.body.number;
+
+  const numberHash = crearHash(number);
+  const passwordHash = crearHash(password)
+
+  console.log(nombre);
+  console.log(password);
+  console.log(number);
+
+  // datos para usar en otra funcion de manejo de ruta
+  req.session.nombre = nombre;
+  req.session.password = passwordHash;
+  req.session.number = number;
+  const sql = `SELECT * FROM USERS WHERE TELEFONO = '${numberHash}'`;
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error al realizar la consulta:', err);
+      const error = {
+        ErrorBasedatos: true,
+        ErrorNomUser: false,
+        ErrorNumber: false
+      };
+      res.render("Registrate", error);
+      return;
+    }
+    if (results.length !== 0) {
+      const error = {
+        ErrorBasedatos: false,
+        ErrorNomUser: false,
+        ErrorNumber: true
+      };
+      res.render("Registrate", error);
+      return;
+    } 
+    
+  });
+  const sqlnombre = `SELECT * FROM USERS WHERE NIKNAME = '${nombre}'`;
+  connection.query(sqlnombre, (err, results) => {
+    if (err) {
+      console.error('Error al realizar la consulta:', err);
+      const error = {
+        ErrorBasedatos: true,
+        ErrorNomUser: false,
+        ErrorNumber: false
+      };
+      res.render("Registrate", error);
+      return;
+    }
+    if (results.length !== 0) {
+      const error = {
+        ErrorBasedatos: false,
+        ErrorNomUser: true,
+        ErrorNumber: false
+      };
+      res.render("Registrate", error);
+      return;
+    }
+  
+  });
 
   client.verify.v2
-    .services(verifySid)
-    .verifications.create({ to: "+50247013483", channel: "sms" })
-    .then((verification) => {
-      console.log(verification.status);
-      res.redirect("/verificar");
-      
-    })
-    .catch((error) => {
-      console.log(error);
-      res.send("Hubo un error al enviar el SMS");
-    });
+      .services(verifySid)
+      .verifications.create({ to: "+502" + number, channel: "sms" })
+      .then((verification) => {
+        console.log(verification.status);
+        res.redirect("/verificar");
+      })
+      .catch((error) => {
+        console.log(error);
+        res.send("Hubo un error al enviar el SMS");
+      });
 });
 
 app.get("/verificar", (req, res) => {
+
   let datos = {
     EnvForm: true,
     respuestaservidor: false
@@ -60,16 +164,30 @@ app.get("/verificar", (req, res) => {
 app.post("/verificar", (req, res) => {
   const otpCode = req.body.otpCode;
   let numFailedAttempts = 0; // variable para contar los intentos fallidos
+  const nombre = req.session.nombre; //datos
+  const password = req.session.password;
+  const number = req.session.number
+  
 
   const verifyOTP = () => {
     client.verify.v2
       .services(verifySid)
-      .verificationChecks.create({ to: "+50247013483", code: otpCode })
+      .verificationChecks.create({ to: "+502"+number, code: otpCode })
       .then((vc) => {
         verification_check = vc;
         console.log(otpCode);
         console.log(verification_check.status);
         if (verification_check.status == "approved") {
+          const sql = `INSERT INTO USERS (TELEFONO, NIKNAME, PASWORD) VALUES ('${number}', '${nombre}', '${password}')`;
+          connection.query(sql, (err, result) => {
+            if (err) {
+              console.error('Error al ejecutar la consulta:', err);
+              return;
+            }
+        
+            console.log('Datos insertados correctamente');
+          });
+          
           return res.redirect("/secionIniciada");
         } else {
           numFailedAttempts++;
@@ -98,8 +216,56 @@ app.post("/verificar", (req, res) => {
 });
 
 
+app.get("/secion",(req, res)=>{
+  const error = {
+    respuestaservidor: false
+  }
+  res.render("IniciarSecion", error)
+})
+
+app.post("/VerificarUser",(req, res)=>{
+  const nombre = req.body.nombre_secion;
+  const dato1 = req.body.password_secion;
+  const password = crearHash(dato1);
+
+  req.session.nombre = nombre;
+
+  
+
+  const sql = `SELECT * FROM USERS WHERE NIKNAME = '${nombre}'`;
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error al realizar la consulta:', err);
+      const error = {
+        respuestaservidor: true
+      }
+      res.render("IniciarSecion", error)
+    }
+    if(results.length === 0){
+      const error = {
+        respuestaservidor: true
+      }
+      res.render("IniciarSecion", error);
+    }
+  
+console.log(results)
+
+    if(results[0].PASWORD == password){
+      res.redirect("/secionIniciada")
+    }else{
+      const error = {
+        respuestaservidor: true
+      }
+      res.render("IniciarSecion", error);
+    }
+  });
+})
+
+
+
 app.get("/secionIniciada", (req, res) =>{
   const inicio ={
+    User: req.session.nombre,
     inicioSecion : true,
     ruta: 0,
   }
@@ -121,6 +287,7 @@ const outputPath = path.join(__dirname, 'PDFfirmado', 'nuevo_archivo.pdf');
 
 app.post('/ruta1', (req, res) =>{
   const rutauser ={
+    User: req.session.nombre,
     inicioSecion : false,
     ruta: 1,
     subirArchivo: true,
@@ -132,6 +299,7 @@ app.post('/ruta1', (req, res) =>{
 //Creamos lo necesario para firmar el documento
 app.post('/ruta1', (req, res) =>{
   const rutauser ={
+    User: req.session.nombre,
     inicioSecion : false,
     ruta: 1,
     subirArchivo: true,
@@ -146,12 +314,14 @@ app.post('/firmar',upload.single('pdf'), (req, res)=>{
   //Son los datos para que renderize correctamente
   const rutasUser =[
     {
+      User: req.session.nombre,
       inicioSecion : false,
       ruta: 1,
       subirArchivo: true,
       ErrorPDF: true
     },
     {
+      User: req.session.nombre,
       inicioSecion : false,
       ruta: 1,
       subirArchivo: false,
@@ -178,8 +348,10 @@ app.post('/descargar', (req, res)=>{
 app.post('/ruta2', (req, res)=>{
   
   const rutauser= {
+    User: req.session.nombre,
     inicioSecion: false,
     ruta: 2,
+    subirArchivo: true,
     ErrorPDF: false
   }
   res.render("UserInterface", rutauser);
@@ -187,11 +359,13 @@ app.post('/ruta2', (req, res)=>{
 app.post('/verificar', upload.fields([{ name: 'pdf1', maxCount: 1 }, { name: 'pdf2', maxCount: 1 }]), (req, res) => {
   const rutasUser =[
     {
+      User: req.session.nombre,
       inicioSecion : false,
       ruta: 2,
       ErrorPDF: true
     },
     {
+      User: req.session.nombre,
       inicioSecion : false,
       ruta: 1,
       subirArchivo: false,
@@ -287,13 +461,25 @@ function guardarPDF(req, res, rutauser, firmar) {
 
 
 app.get("/identicas", (req, res)=>{
-  const message = "Las firmas coinciden"
-  res.render("prueba", {message});
+  const rutauser= {
+    User: req.session.nombre,
+    inicioSecion: false,
+    ruta: 2,
+    subirArchivo: false,
+    Correcto: true
+  }
+  res.render("UserInterface", rutauser);
 })
 
 app.get("/diferentes", (req, res)=>{
-  const message = "Las firmas no coinciden"
-  res.render("prueba", {message});
+  const rutauser= {
+    User: req.session.nombre,
+    inicioSecion: false,
+    ruta: 2,
+    subirArchivo: false,
+    Correcto: false
+  }
+  res.render("UserInterface", rutauser);
 })
 
 //funcion para la preparación de descarga del PDF

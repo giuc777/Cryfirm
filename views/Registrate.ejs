@@ -22,15 +22,27 @@
             <img class="logo_img" src="img/pantalla_de_inicio.png" alt="">
         </icon>
         <section class="AreadeRegistro">
-            <form action="/enviar-sms" method="post">
+            <% if (ErrorBasedatos) { %>
+                <span class="alert">Los datos ingresados son invalidos</span>
+            <% } %>
+            <% if (ErrorNomUser) { %>
+                <span class="alert">Utiliza otro nombre de Usuario</span>
+            <% } %>
+            <% if (ErrorNumber) { %>
+                <span class="alert">El numero ingresado ya esta registrado utiliza otro</span>
+            <% } %>
+            <form action="/enviar-sms" method="post" class="form">
                     <label for=""> Nombre de Usuario</label>
-                    <input type="text" class="Nombre_usuario", required>
+                    <input type="text" class="Nombre_usuario", required="", placeholder="nombre" name="nombre" autocomplete="off">
+                    <label for="">Contraseña</label>
+                    <input type="password" required="" placeholder="password" name="password" autocomplete="off">
                     <label for="">Número de telefono</label>
-                    <input type="tel" ondrop="return false;" onpaste="return false;" onkeypress="return event.charCode&gt;=48 &amp;&amp; event.charCode&lt;=57" class="telefono", required>
+                    <input type="tel" autocomplete="off" placeholder="number" name="number" ondrop="return false;" onpaste="return false;" onkeypress="return event.charCode&gt;=48 &amp;&amp; event.charCode&lt;=57" class="telefono", required>
                     <label for="">Fecha de Nacimiento</label>
-                    <input type="date">
+                    <input type="date" autocomplete="off">
                     <input type="submit" value="Crear Cuenta" class="form__boton">
             </form>
+            
         </section>
     </main>
     <script src="//media.twiliocdn.com/sdk/js/client/v1.4/twilio.min.js"></script>

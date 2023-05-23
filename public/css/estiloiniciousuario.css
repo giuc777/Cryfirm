@@ -24,7 +24,7 @@ body{
 }
 
 
-.form, .formRuta1{
+.form, .formRuta1, .formRuta2{
    
     padding: 10px;
     background: rgb(11, 11, 11);
@@ -269,7 +269,7 @@ menu{
     margin-block-end: 2vh;
   }
   
-  .formRuta1 button{
+  button {
     display: block;
     margin: auto;
     margin-block-start: 5vh;
@@ -303,8 +303,15 @@ menu{
   .formRuta1 p{
     font-size: 4vh;
   }
+
+  .imgResultado{
+    width: 90px;
+    height: 90px;
+   border-radius: 100dvh;
+   animation: rotar 5s linear infinite;
+  }
  
-  .formRuta1 .alertPDF{
+  .formRuta1 .alertPDF{ 
     margin-block-start: 2vh;
     color: #b70909;
     font-size: 5vh;

@@ -16,12 +16,13 @@
       border-radius: 30px; /* forma del borde */
       display: flex;
       justify-content: space-around;
-
+      height: 60vh;
       
   }
   .logo_img{
       width: 250px;
       align-items: flex-end; /*colocar una foto de imagen"first baseline" */
+      height: 50vh;
   }
   
   .form_registro{
@@ -45,8 +46,9 @@
   }
   
  .AreadeRegistro{
+  margin-block-start: 2vh;
   display: grid;
-  place-self: center;
+  place-items: center;
   height: 35vh;
   
  }
@@ -86,4 +88,9 @@ input[type="tel"]:focus {
     background: rgb(255, 255, 255);
   
   }
- 
+  span{
+    margin-top: 20px;
+    font-weight: bold;
+    color: red;
+    display: block;
+  }

@@ -8,7 +8,7 @@
     <cript src="https://kit.fontawesome.com/03a89292db.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <title>Crypfirm inicio</title>
-    <link rel="stylesheet" href="css/estiloiniciousuario.css">
+    <link rel="stylesheet" href="/css/estiloiniciousuario.css">
     
 
 </head>
@@ -20,13 +20,13 @@
  <div class="menu">
 
     <a href="#" class="usn">[Usuario]:</a> 
-    <b href="#" class="nom">[@Shadow-01]</b>
+    <b href="#" class="nom"><%= User %></b>
    
 
 
     <nav class="barnav">
         <ul>
-            <li><a href="#"">[Cerra sesión]</a></li>
+            <li><a href="/">[Cerra sesión]</a></li>
         </ul>
 
     </nav>
@@ -38,7 +38,7 @@
   <div class="header-content container">
      <div class="header-txt">
         <div class="logo">
-            <img class="logo_img" src="img/kit.jpg" alt="">
+            <img class="logo_img" src="/img/kit.jpg" alt="">
         </div>
         <h1>Crypfirm</h1>
         <span>Empresa Guatemalteca</span>
@@ -92,26 +92,51 @@
                             <label for="">Descarga El PDF firmado</label>
                             <button type="submit">Descargar PDF</button>
                         </form>
-                        <button onclick="window.location.href='/secionIniciada'">Regresar al inicio</button>
+                        <button onclick="window.location.href='/'">Regresar al inicio</button>
                     </article> 
                 <% } %>
             </section>
         <% } else if (ruta == 2) { %>
-            <form action="/verificar" method="POST" enctype="multipart/form-data">
-                <p>
-                    Inserte los archivos en PDF que lleven la mismas firmas electronicas
-                </p>
-                <p>archivo 1</p>
-                <input type="file" id="pdf1" name="pdf1" accept="application/pdf" required>
-                <p>archivo 2</p>
-                <input type="file" id="pdf2" name="pdf2" accept="application/pdf" required>
-                <% if (ErrorPDF) { %>
-                    <label class="alertPDF">Tu archivo no es PDF</label>
-                <% } %>   
-                <button type="submit" class="buttonVerificar">Verificar firmas</button>
-
+            <section class="formRuta2">
+                <% if (subirArchivo) { %>
+                    <form action="/verificar" method="POST" enctype="multipart/form-data">
+                        <p>Inserte los archivos en PDF que lleven las mismas firmas electrónicas</p>
+                        <p>archivo 1</p>
+                        <input type="file" id="pdf1" name="pdf1" accept="application/pdf" required>
+                        <p>archivo 2</p>
+                        <input type="file" id="pdf2" name="pdf2" accept="application/pdf" required>
+                        <% if (ErrorPDF) { %>
+                            <label class="alertPDF">Tu archivo no es un PDF</label>
+                        <% } %>   
+                        <button type="submit" class="buttonVerificar">Verificar firmas</button>
+                    </form>
+                <% }
+                else if (Correcto) { %>
+                    <article class="HashCorrecto">
+                        <div>
+                            <p>Las firmas son idénticas</p>
+                            <img class="imgResultado" src="./correctopng.png" alt="">
+                        </div>
+                        <form method="POST" action="/ruta2">
+                            <button type="submit">Quiero verificar otros documentos</button>
+                        </form>
+                        <button onclick="window.location.href='/'">Regresar al inicio</button>
+                    </article>
+                <% }
+                else { %>
+                    <article class="HashCorrecto">
+                        <div>
+                            <p>Las firmas no coinciden</p>
+                            <img class="imgResultado" src="./incorrecto.png" alt="">
+                        </div>
+                        <form method="POST" action="/ruta2">
+                            <button type="submit">Quiero verificar otros documentos</button>
+                        </form>
+                         <button onclick="window.location.href='/'">Regresar al inicio</button>
+                    </article>
+                <% } %>
                 
-            </form>
+            </section>
         <% } %>
         
 
